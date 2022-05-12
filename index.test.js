@@ -1,63 +1,51 @@
-const {sequelize} = require("./db");
+const {sequelize} = require('./db');
+const {Band, Musician} = require('./index')
 
-const {Musician, Band} = require("./index") // pull them from index, where we make our association
+describe('Band and Musician Models', () => {
+    /**
+     * Runs the code prior to all tests
+     */
+    beforeAll(async () => {
+        // the 'sync' method will create tables based on the model class
+        // by setting 'force:true' the tables are recreated each time the 
+        // test suite is run
+        await sequelize.sync({ force: true });
+    })
 
-// const {Band} = require('./Band') //why is this bad? Because our Band doesn't have an association here!
+    test('can create a Band', async () => {
+        // TODO - test creating a band
+        const myBand = await Band.create({name: 'abraham'})
+        expect(myBand.name).toBe('abraham');
+        console.log(myBand)
+    })
+    test('band has a genre', async() =>{
+                const myBand = await Band.create({genre: 'lalibela'})
+                expect(myBand.genre).toBe('lalibela')
+                console.log(myBand)
+    })
 
-//Destructuring Syntax
-// const {banana} = require('./fruit')
+    test('can create a Musician', async () => {
+        // TODO - test creating a musician
+        const mySingers = await Musician.create({name: 'afro', instrument: 'saxfone'})
+        expect(mySingers.name).toBe('afro');
+        expect(mySingers.instrument).toBe('saxfone')
+        console.log(mySingers)
+    })
+    test('a band may have many musicians', async() =>{
+            const kochaB = await Band.create({name: 'kochaB', genre: 'bati'})
 
-// const banana = require('./fruit').banana
+            const teddy = await Musician.create({name: 'teddy', instrument: 'keyboard'})
+            const abraham = await Musician.create({name: 'abraham', instrument: 'washint'})
+            const epha =await Musician.create({name: 'epha', instrument: 'washint'})
 
-describe('Musician Database', () => {
+            await kochaB.addMusician(teddy)
+            await kochaB.addMusician(abraham)
 
-	beforeAll(async () => {
-		await sequelize.sync({force: true})
-	})
+            await kochaB.addMusician(epha)
 
-	test('can create a musician', async() => {
-		const testMusician = await Musician.create({name : 'Prince'})
-		expect(testMusician.name).toBe('Prince')
-	})
+            const musicians = await kochaB.getMusicians()
 
-	test('musicians can play an instrument', async () => {
-		const testMusician = await Musician.create({name: 'Jimi Hendrix', instrument : "Guitar"});
-		expect(testMusician.instrument).toBe('Guitar');
-	})
-
-	test('can create a band', async () => {
-		const testBand = await Band.create({name : 'TLC'})
-		expect(testBand.name).toBe('TLC')
-	})
-
-	test('bands have a genre', async() => {
-		const testBand = await Band.create({name : 'Spice Girls', genre : 'Pop'})
-		expect(testBand.genre).toBe('Pop')
-	})
-
-	test('Bands can have many musicians', async () => {
-		const BTS = await Band.create({name : 'BTS', genre : 'Pop'})
-
-		const jungkook = await Musician.create({name : 'Jungkook', instrument : 'vocals'});
-		const jimin = await Musician.create({name : 'Jimin', instrument : 'vocals' });
-		const suga = await Musician.create({name : 'Suga', instrument : 'rap'});
-
-		await BTS.addMusician(jungkook) //addMusician is a 'magic method' we get from Sequelize, once we declare an association
-		await BTS.addMusician(jimin)
-		await BTS.addMusician(suga)
-
-		const musicians = await BTS.getMusicians() // another association 'magic method'
-
-		expect(musicians.length).toBe(3)
-		expect(musicians[0] instanceof Musician).toBeTruthy
-
-	})
-    // test('deleting an instance', async() =>{
-    //     const deletTest = await Band.create({name: 'absho'})
-    //     console.log(deletTest.name)
-    //     await absho.destroy()
-    //     expect(deletTest.name).toBe(destroy)
-    // })
-	
-
+            expect(musicians.length).toBe(3)
+            expect(musicians[0] instanceof Musician).toBeTruthy
+    })
 })
