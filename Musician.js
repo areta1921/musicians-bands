@@ -1,8 +1,17 @@
-const {Sequelize, sequelize} = require('./db');
+const {sequelize, DataTypes, Model} = require('./db');
 
-// TODO - define the Musician model
-let Musician;
+// Creates a Musician Table in our database
+class Musician extends Model {
+	//add custom methods for advanced querying
+}
 
-module.exports = {
-    Musician
-};
+// Create attributes (columns) for our model
+Musician.init({
+	name: DataTypes.STRING, 
+	instrument: DataTypes.STRING
+}, {
+	sequelize, // What database is our table stored in
+	// timestamps: false,
+});
+
+module.exports = { Musician }

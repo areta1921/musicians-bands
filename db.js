@@ -1,9 +1,14 @@
-const path = require('path');
-const { Sequelize, Model } = require('sequelize');
+const {Sequelize, DataTypes, Model} = require('sequelize');
 
-// TODO - create the new sequelize connection
+// Creates a database named 'sequelize'
+// Lets us add our models (tables) later!
 
-module.exports = {
-    sequelize,
-    Sequelize
-};
+const sequelize = new Sequelize('database', 'username','password', {
+	dialect: 'sqlite', // what type of sql?
+	storage : './music.sqlite', //file location for our db
+	logging: false
+} )
+
+
+
+module.exports = {sequelize, DataTypes, Model};
