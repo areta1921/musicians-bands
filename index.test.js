@@ -1,5 +1,5 @@
 const {sequelize} = require('./db');
-const {Band, Musician} = require('./index')
+const {Band, Musician,Song} = require('./index')
 
 describe('Band and Musician Models', () => {
     /**
@@ -31,6 +31,13 @@ describe('Band and Musician Models', () => {
         expect(mySingers.instrument).toBe('saxfone')
         console.log(mySingers)
     })
+    test('can create songs', async() => {
+        const song1 = await Song.create({artistName: 'lu', title: 'alwashem'})
+        expect(song1.artistName).toBe('lu')
+        expect(song1.title).toBe('alwashem')
+        console.log(song1)
+ })
+
     test('a band may have many musicians', async() =>{
             const kochaB = await Band.create({name: 'kochaB', genre: 'bati'})
 
