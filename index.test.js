@@ -37,6 +37,16 @@ describe('Band and Musician Models', () => {
         expect(song1.title).toBe('alwashem')
         console.log(song1)
  })
+ test('update the name field', async() =>{
+    const nani = await Musician.create({name: 'nani'})
+    nani.name = 'ephrem'
+    await nani.save()
+    
+})
+test('delet the filed data', async() =>{
+     const jambo = await Musician.create({name: 'jambo'})
+     await jambo.destroy()
+})
 
     test('a band may have many musicians', async() =>{
             const kochaB = await Band.create({name: 'kochaB', genre: 'bati'})
