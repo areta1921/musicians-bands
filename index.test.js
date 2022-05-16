@@ -16,12 +16,17 @@ describe('Band and Musician Models', () => {
         // TODO - test creating a band
         const myBand = await Band.create({name: 'abraham'})
         expect(myBand.name).toBe('abraham');
-        console.log(myBand)
+        Band.findAll({
+            where:{
+                 name: 'abraham'
+            }
+        })
+        console.log(myBand.toJSON())
     })
     test('band has a genre', async() =>{
                 const myBand = await Band.create({genre: 'lalibela'})
                 expect(myBand.genre).toBe('lalibela')
-                console.log(myBand)
+                // console.log(myBand)
     })
 
     test('can create a Musician', async () => {
@@ -29,24 +34,28 @@ describe('Band and Musician Models', () => {
         const mySingers = await Musician.create({name: 'afro', instrument: 'saxfone'})
         expect(mySingers.name).toBe('afro');
         expect(mySingers.instrument).toBe('saxfone')
-        console.log(mySingers)
+        // console.log(mySingers)
     })
-    test('can create songs', async() => {
-        const song1 = await Song.create({artistName: 'lu', title: 'alwashem'})
-        expect(song1.artistName).toBe('lu')
-        expect(song1.title).toBe('alwashem')
-        console.log(song1)
- })
- test('update the name field', async() =>{
-    const nani = await Musician.create({name: 'nani'})
-    nani.name = 'ephrem'
-    await nani.save()
     
-})
-test('delet the filed data', async() =>{
+    test('update the name field', async() =>{
+    const nani = await Musician.update({name: 'nani'},{
+        where: {
+            name: null
+        }
+    }) 
+    console.log(nani)
+    
+    })
+    test('delet the filed data', async() =>{
      const jambo = await Musician.create({name: 'jambo'})
      await jambo.destroy()
-})
+    })
+
+    test('find all data', async() =>{
+      const abc = await Band.create({name: 'ABRAHAM',genre: 'alawkewum'})
+      Band.findAll()
+    //   console.log(abc.toJSON());
+    })
 
     test('a band may have many musicians', async() =>{
             const kochaB = await Band.create({name: 'kochaB', genre: 'bati'})
@@ -57,12 +66,30 @@ test('delet the filed data', async() =>{
 
             await kochaB.addMusician(teddy)
             await kochaB.addMusician(abraham)
-
             await kochaB.addMusician(epha)
 
             const musicians = await kochaB.getMusicians()
+              
 
+                        let  b = await Band.findAll({include: Musician})
+                        console.log('my test******',b)
             expect(musicians.length).toBe(3)
             expect(musicians[0] instanceof Musician).toBeTruthy
+           
     })
+
+            test('can create songs', async() => {
+                const song1 = await Song.create({title: 'lu', year: 1992})
+                expect(song1.title).toBe('lu')
+                expect(song1.year).toBe(1992)
+                console.log(song1.toJSON())
+            })
+            test('many to many relationship', async() =>{
+                song2 = await Song.create({title: 'fiker', year: 2002})
+                expect(song2.title).toBe('fiker')
+                expect(song2.year).toBe(2002)
+                console.log(song2.toJSON())
+            })
+        
+
 })

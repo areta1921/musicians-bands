@@ -1,3 +1,4 @@
+const { timeStamp } = require('console');
 const path = require('path');
 const { Sequelize, Model } = require('sequelize');
 
@@ -5,8 +6,7 @@ const { Sequelize, Model } = require('sequelize');
 const sequelize = new Sequelize('ab-db','areta','Zeko@0922',{
     dialect: 'sqlite',
     storage: './sqlite',
-    logging: false
-
+    logging: false 
 })
 
 
