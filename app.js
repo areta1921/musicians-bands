@@ -27,6 +27,12 @@ res.json(ac)
 
 })
 
+app.get('/bands/:id', async(req, res) =>{
+  const ad = req.params.id
+  let av = await Band.findByPk(ad)
+  res.json({av})
+})
+
 
 app.listen(port, async() =>{
       await seed()
